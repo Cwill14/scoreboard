@@ -3,10 +3,10 @@ const graphql = require('graphql');
 const { 
     GraphQLObjectType,
     GraphQLSchema,
+    GraphQLList,
     GraphQLString,
     GraphQLInt,
-    GraphQLID,
-    GraphQLList
+    GraphQLID
 } = graphql;
 
 const Game = require('../models/game');
