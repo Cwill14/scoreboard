@@ -92,12 +92,13 @@ const Mutation = new GraphQLObjectType({
                     password: args.password,
                     email: args.email
                 })
-                user.save()
+                return user.save()
             }
         }
     }
 })
 
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation: Mutation
 })
