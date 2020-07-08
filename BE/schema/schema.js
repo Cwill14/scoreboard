@@ -22,6 +22,7 @@ const GameType = new GraphQLObjectType({
             type: UserType,
             resolve(parent, args) {
                 // return users.find(user => user.id == parent.userId)
+                return User.findById(parent.userId)
             }
         }
     })
@@ -38,6 +39,7 @@ const UserType = new GraphQLObjectType({
             type: new GraphQLList(GameType),
             resolve(parent, args) {
                 // return games.filter(game => game.userId == parent.id)
+                return Game.find({ userId: parent.id })
             }
         }
     })
@@ -52,12 +54,14 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 // code to get data from db/other source
                 // return games.find(game => game.id == args.id);
+                return Game.findById(args.id)
             }
         },
         games: {
             type: GraphQLList(GameType),
             resolve(parent, args) {
                 // return games
+                return Game.find({})
             }
         },
         user: {
@@ -65,12 +69,14 @@ const RootQuery = new GraphQLObjectType({
             args: {id: {type: GraphQLID}},
             resolve(parent, args) {
                 // return users.find(user => user.id == args.id)
+                return User.findById(args.id)
             }
         },
         users: {
             type: GraphQLList(UserType),
             resolve(parent, args) {
                 // return users
+                return User.find({})
             }
         }
     }
@@ -86,13 +92,29 @@ const Mutation = new GraphQLObjectType({
                 password: {type: GraphQLString},
                 email: {type: GraphQLString}
             },
-            resolve(parents, args) {
+            resolve(parent, args) {
                 let user = new User({
                     username: args.username,
                     password: args.password,
                     email: args.email
                 })
                 return user.save()
+            }
+        },
+        addGame: {
+            type: GameType,
+            args: {
+                homeScore: {type: GraphQLInt},
+                awayScore: {type: GraphQLInt},
+                userId: {type: GraphQLID}
+            },
+            resolve(parent, args) {
+                let game = new Game({
+                    homeScore: args.homeScore,
+                    awayScore: args.awayScore,
+                    userId: args.userId
+                });
+                return game.save()
             }
         }
     }
