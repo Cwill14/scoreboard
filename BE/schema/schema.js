@@ -4,6 +4,7 @@ const {
     GraphQLObjectType,
     GraphQLSchema,
     GraphQLList,
+    GraphQLNonNull,
     GraphQLString,
     GraphQLInt,
     GraphQLID
@@ -88,9 +89,9 @@ const Mutation = new GraphQLObjectType({
         addUser: {
             type: UserType,
             args: {
-                username: {type: GraphQLString},
-                password: {type: GraphQLString},
-                email: {type: GraphQLString}
+                username: {type: new GraphQLNonNull(GraphQLString)},
+                password: {type: new GraphQLNonNull(GraphQLString)},
+                email: {type: new GraphQLNonNull(GraphQLString)}
             },
             resolve(parent, args) {
                 let user = new User({
@@ -104,9 +105,9 @@ const Mutation = new GraphQLObjectType({
         addGame: {
             type: GameType,
             args: {
-                homeScore: {type: GraphQLInt},
-                awayScore: {type: GraphQLInt},
-                userId: {type: GraphQLID}
+                homeScore: {type: new GraphQLNonNull(GraphQLInt)},
+                awayScore: {type: new GraphQLNonNull(GraphQLInt)},
+                userId: {type: new GraphQLNonNull(GraphQLID)}
             },
             resolve(parent, args) {
                 let game = new Game({
